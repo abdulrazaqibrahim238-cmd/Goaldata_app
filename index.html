@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GoalData</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #0b1220;
+      color: white;
+    }
+
+    header {
+      background: #111c32;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 30px;
+    }
+
+    header p {
+      color: #aab6cc;
+      margin-top: 5px;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .search {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    .card {
+      background: #16233b;
+      border-radius: 15px;
+      padding: 18px;
+      margin-bottom: 15px;
+    }
+
+    .card h2 {
+      margin-bottom: 10px;
+    }
+
+    .match {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0f1a2d;
+      padding: 14px;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+
+    .team {
+      font-weight: bold;
+    }
+
+    .score {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #1d9bf0;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>⚽ GoalData</h1>
+    <p>Football Data & Live Scores</p>
+  </header>
+
+  <div class="container">
+
+    <input
+      type="text"
+      class="search"
+      placeholder="Search football teams..."
+      onkeyup="searchTeams()"
+      id="search"
+    >
+
+    <div class="card">
+      <h2>🔥 Today's Matches</h2>
+
+      <div class="match">
+        <span class="team">Real Madrid</span>
+        <span class="score">2 - 1</span>
+        <span class="team">Barcelona</span>
+      </div>
+
+      <div class="match">
+        <span class="team">Liverpool</span>
+        <span class="score">1 - 1</span>
+        <span class="team">Arsenal</span>
+      </div>
+
+      <div class="match">
+        <span class="team">Chelsea</span>
+        <span class="score">3 - 0</span>
+        <span class="team">Milan</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📊 Football Data</h2>
+      <p>Goals • Results • Teams • Players • Statistics</p>
+
+      <button onclick="showMessage()">
+        Explore GoalData
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    function showMessage() {
+      alert("Welcome to GoalData! ⚽");
+    }
+
+    function searchTeams() {
+      const search = document
+        .getElementById("search")
+        .value
+        .toLowerCase();
+
+      const matches = document.querySelectorAll(".match");
+
+      matches.forEach(match => {
+        const text = match.innerText.toLowerCase();
+
+        if (text.includes(search)) {
+          match.style.display = "flex";
+        } else {
+          match.style.display = "none";
+        }
+      });
+    }
+  </script>
+
+</body>
+  </html>
