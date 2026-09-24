@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GoalData</title>
+
+  <title>GoalData - Football Data</title>
 
   <style>
     * {
@@ -14,59 +15,119 @@
     }
 
     body {
-      background: #0b1220;
+      background: #08111f;
       color: white;
+      min-height: 100vh;
     }
 
     header {
-      background: #111c32;
-      padding: 20px;
+      background: linear-gradient(135deg, #101f38, #0b1628);
+      padding: 25px 18px;
       text-align: center;
+      border-bottom: 1px solid #263753;
     }
 
     header h1 {
-      font-size: 30px;
+      font-size: 34px;
+      margin-bottom: 7px;
     }
 
     header p {
-      color: #aab6cc;
-      margin-top: 5px;
+      color: #9eabc0;
+      font-size: 15px;
     }
 
     .container {
-      padding: 20px;
-      max-width: 700px;
+      width: 100%;
+      max-width: 900px;
       margin: auto;
+      padding: 18px;
+    }
+
+    .search-box {
+      margin-bottom: 18px;
     }
 
     .search {
       width: 100%;
-      padding: 14px;
-      border-radius: 10px;
-      border: none;
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid #2b3d5b;
+      background: #111d31;
+      color: white;
       outline: none;
-      margin-bottom: 20px;
       font-size: 16px;
     }
 
+    .search::placeholder {
+      color: #8290a7;
+    }
+
+    .nav {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .nav button {
+      background: #14233a;
+      border: 1px solid #263b5b;
+      color: white;
+      padding: 11px 5px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .nav button.active {
+      background: #1689e8;
+      border-color: #1689e8;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
     .card {
-      background: #16233b;
-      border-radius: 15px;
+      background: #111e33;
+      border: 1px solid #263754;
+      border-radius: 16px;
       padding: 18px;
-      margin-bottom: 15px;
+      margin-bottom: 16px;
     }
 
-    .card h2 {
-      margin-bottom: 10px;
-    }
-
-    .match {
+    .card-title {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #0f1a2d;
-      padding: 14px;
-      border-radius: 10px;
+      margin-bottom: 14px;
+    }
+
+    .card-title h2 {
+      font-size: 20px;
+    }
+
+    .badge {
+      background: #16395b;
+      color: #55b7ff;
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+
+    .match {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 10px;
+      background: #0b1627;
+      border-radius: 12px;
+      padding: 15px;
       margin-top: 10px;
     }
 
@@ -74,21 +135,171 @@
       font-weight: bold;
     }
 
+    .team:last-child {
+      text-align: right;
+    }
+
     .score {
-      font-size: 20px;
+      font-size: 19px;
+      font-weight: bold;
+      color: #55b7ff;
+      white-space: nowrap;
+    }
+
+    .status {
+      text-align: center;
+      color: #7f8da3;
+      font-size: 11px;
+      margin-top: 5px;
+    }
+
+    .league {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0b1627;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 10px;
+    }
+
+    .league-name {
       font-weight: bold;
     }
 
-    button {
+    .league-country {
+      color: #8e9bb0;
+      font-size: 12px;
+    }
+
+    .team-grid,
+    .player-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .team-card,
+    .player-card {
+      background: #0b1627;
+      border-radius: 12px;
+      padding: 15px;
+      border: 1px solid #20334f;
+    }
+
+    .team-card h3,
+    .player-card h3 {
+      margin-bottom: 6px;
+      font-size: 16px;
+    }
+
+    .team-card p,
+    .player-card p {
+      color: #8998ad;
+      font-size: 13px;
+    }
+
+    .player-number {
+      color: #4db3ff;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    table {
       width: 100%;
-      padding: 14px;
+      border-collapse: collapse;
+      overflow: hidden;
+    }
+
+    th {
+      color: #7f91aa;
+      font-size: 12px;
+      text-align: left;
+      padding: 10px 6px;
+      border-bottom: 1px solid #293b57;
+    }
+
+    td {
+      padding: 13px 6px;
+      border-bottom: 1px solid #1e304b;
+      font-size: 14px;
+    }
+
+    .position {
+      font-weight: bold;
+      color: #55b7ff;
+    }
+
+    .points {
+      font-weight: bold;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #12365a, #102038);
+      border-radius: 17px;
+      padding: 22px;
+      margin-bottom: 18px;
+      border: 1px solid #28517a;
+    }
+
+    .hero h2 {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .hero p {
+      color: #a9b8ca;
+      line-height: 1.5;
+    }
+
+    .button {
+      width: 100%;
+      padding: 13px;
+      margin-top: 14px;
       border: none;
       border-radius: 10px;
-      background: #1d9bf0;
+      background: #1689e8;
       color: white;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: bold;
-      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      background: #0f78d0;
+    }
+
+    .empty {
+      text-align: center;
+      color: #7f8da3;
+      padding: 20px;
+      display: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px 15px;
+      color: #66758c;
+      font-size: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .nav {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .team-grid,
+      .player-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .match {
+        font-size: 13px;
+      }
+
+      header h1 {
+        font-size: 29px;
+      }
     }
   </style>
 </head>
@@ -97,76 +308,509 @@
 
   <header>
     <h1>⚽ GoalData</h1>
-    <p>Football Data & Live Scores</p>
+    <p>Football Data • Matches • Teams • Players • Standings</p>
   </header>
 
-  <div class="container">
+  <main class="container">
 
-    <input
-      type="text"
-      class="search"
-      placeholder="Search football teams..."
-      onkeyup="searchTeams()"
-      id="search"
-    >
-
-    <div class="card">
-      <h2>🔥 Today's Matches</h2>
-
-      <div class="match">
-        <span class="team">Real Madrid</span>
-        <span class="score">2 - 1</span>
-        <span class="team">Barcelona</span>
-      </div>
-
-      <div class="match">
-        <span class="team">Liverpool</span>
-        <span class="score">1 - 1</span>
-        <span class="team">Arsenal</span>
-      </div>
-
-      <div class="match">
-        <span class="team">Chelsea</span>
-        <span class="score">3 - 0</span>
-        <span class="team">Milan</span>
-      </div>
+    <div class="search-box">
+      <input
+        id="search"
+        class="search"
+        type="text"
+        placeholder="🔎 Search teams, players or leagues..."
+        onkeyup="searchEverything()"
+      >
     </div>
 
-    <div class="card">
-      <h2>📊 Football Data</h2>
-      <p>Goals • Results • Teams • Players • Statistics</p>
+    <nav class="nav">
 
-      <button onclick="showMessage()">
-        Explore GoalData
+      <button class="active" onclick="showSection('home', this)">
+        🏠 Home
       </button>
+
+      <button onclick="showSection('matches', this)">
+        ⚽ Matches
+      </button>
+
+      <button onclick="showSection('leagues', this)">
+        🏆 Leagues
+      </button>
+
+      <button onclick="showSection('teams', this)">
+        🛡️ Teams
+      </button>
+
+      <button onclick="showSection('players', this)">
+        👤 Players
+      </button>
+
+      <button onclick="showSection('standings', this)">
+        📊 Table
+      </button>
+
+    </nav>
+
+    <!-- HOME -->
+
+    <section id="home" class="section active">
+
+      <div class="hero">
+
+        <h2>Welcome to GoalData ⚽</h2>
+
+        <p>
+          Your football hub for matches, teams, players,
+          leagues and statistics.
+        </p>
+
+        <button class="button" onclick="showSectionById('matches')">
+          Explore Matches
+        </button>
+
+      </div>
+
+      <div class="card">
+
+        <div class="card-title">
+          <h2>🔥 Today's Matches</h2>
+          <span class="badge">LIVE DATA SOON</span>
+        </div>
+
+        <div class="match searchable">
+          <span class="team">Real Madrid</span>
+          <span>
+            <span class="score">2 - 1</span>
+            <div class="status">FT</div>
+          </span>
+          <span class="team">Barcelona</span>
+        </div>
+
+        <div class="match searchable">
+          <span class="team">Liverpool</span>
+          <span>
+            <span class="score">1 - 1</span>
+            <div class="status">FT</div>
+          </span>
+          <span class="team">Arsenal</span>
+        </div>
+
+        <div class="match searchable">
+          <span class="team">Chelsea</span>
+          <span>
+            <span class="score">3 - 0</span>
+            <div class="status">FT</div>
+          </span>
+          <span class="team">Milan</span>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- MATCHES -->
+
+    <section id="matches" class="section">
+
+      <div class="card">
+
+        <div class="card-title">
+          <h2>⚽ Football Matches</h2>
+          <span class="badge">TODAY</span>
+        </div>
+
+        <div class="match searchable">
+          <span class="team">Real Madrid</span>
+          <span>
+            <span class="score">2 - 1</span>
+            <div class="status">Full Time</div>
+          </span>
+          <span class="team">Barcelona</span>
+        </div>
+
+        <div class="match searchable">
+          <span class="team">Liverpool</span>
+          <span>
+            <span class="score">1 - 1</span>
+            <div class="status">Full Time</div>
+          </span>
+          <span class="team">Arsenal</span>
+        </div>
+
+        <div class="match searchable">
+          <span class="team">Chelsea</span>
+          <span>
+            <span class="score">3 - 0</span>
+            <div class="status">Full Time</div>
+          </span>
+          <span class="team">Milan</span>
+        </div>
+
+        <div class="match searchable">
+          <span class="team">PSG</span>
+          <span>
+            <span class="score">2 - 2</span>
+            <div class="status">Full Time</div>
+          </span>
+          <span class="team">Bayern Munich</span>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- LEAGUES -->
+
+    <section id="leagues" class="section">
+
+      <div class="card">
+
+        <div class="card-title">
+          <h2>🏆 Top Leagues</h2>
+        </div>
+
+        <div class="league searchable">
+          <div>
+            <div class="league-name">Premier League</div>
+            <div class="league-country">England 🏴</div>
+          </div>
+          <span class="badge">ENG</span>
+        </div>
+
+        <div class="league searchable">
+          <div>
+            <div class="league-name">La Liga</div>
+            <div class="league-country">Spain 🇪🇸</div>
+          </div>
+          <span class="badge">ESP</span>
+        </div>
+
+        <div class="league searchable">
+          <div>
+            <div class="league-name">Serie A</div>
+            <div class="league-country">Italy 🇮🇹</div>
+          </div>
+          <span class="badge">ITA</span>
+        </div>
+
+        <div class="league searchable">
+          <div>
+            <div class="league-name">Bundesliga</div>
+            <div class="league-country">Germany 🇩🇪</div>
+          </div>
+          <span class="badge">GER</span>
+        </div>
+
+        <div class="league searchable">
+          <div>
+            <div class="league-name">Ligue 1</div>
+            <div class="league-country">France 🇫🇷</div>
+          </div>
+          <span class="badge">FRA</span>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- TEAMS -->
+
+    <section id="teams" class="section">
+
+      <div class="card">
+
+        <div class="card-title">
+          <h2>🛡️ Popular Teams</h2>
+        </div>
+
+        <div class="team-grid">
+
+          <div class="team-card searchable">
+            <h3>Real Madrid</h3>
+            <p>Spain 🇪🇸</p>
+          </div>
+
+          <div class="team-card searchable">
+            <h3>Barcelona</h3>
+            <p>Spain 🇪🇸</p>
+          </div>
+
+          <div class="team-card searchable">
+            <h3>Liverpool</h3>
+            <p>England 🏴</p>
+          </div>
+
+          <div class="team-card searchable">
+            <h3>Arsenal</h3>
+            <p>England 🏴</p>
+          </div>
+
+          <div class="team-card searchable">
+            <h3>Manchester City</h3>
+            <p>England 🏴</p>
+          </div>
+
+          <div class="team-card searchable">
+            <h3>Bayern Munich</h3>
+            <p>Germany 🇩🇪</p>
+          </div>
+
+          <div class="team-card searchable">
+            <h3>PSG</h3>
+            <p>France 🇫🇷</p>
+          </div>
+
+          <div class="team-card searchable">
+            <h3>AC Milan</h3>
+            <p>Italy 🇮🇹</p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- PLAYERS -->
+
+    <section id="players" class="section">
+
+      <div class="card">
+
+        <div class="card-title">
+          <h2>👤 Top Players</h2>
+        </div>
+
+        <div class="player-grid">
+
+          <div class="player-card searchable">
+            <div class="player-number">FW • Real Madrid</div>
+            <h3>Kylian Mbappé</h3>
+            <p>France 🇫🇷</p>
+          </div>
+
+          <div class="player-card searchable">
+            <div class="player-number">FW • Barcelona</div>
+            <h3>Lamine Yamal</h3>
+            <p>Spain 🇪🇸</p>
+          </div>
+
+          <div class="player-card searchable">
+            <div class="player-number">FW • Liverpool</div>
+            <h3>Mohamed Salah</h3>
+            <p>Egypt 🇪🇬</p>
+          </div>
+
+          <div class="player-card searchable">
+            <div class="player-number">FW • Bayern Munich</div>
+            <h3>Harry Kane</h3>
+            <p>England 🏴</p>
+          </div>
+
+          <div class="player-card searchable">
+            <div class="player-number">FW • Manchester City</div>
+            <h3>Erling Haaland</h3>
+            <p>Norway 🇳🇴</p>
+          </div>
+
+          <div class="player-card searchable">
+            <div class="player-number">FW • Inter Miami</div>
+            <h3>Lionel Messi</h3>
+            <p>Argentina 🇦🇷</p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- STANDINGS -->
+
+    <section id="standings" class="section">
+
+      <div class="card">
+
+        <div class="card-title">
+          <h2>📊 Premier League Table</h2>
+          <span class="badge">SAMPLE</span>
+        </div>
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>TEAM</th>
+              <th>MP</th>
+              <th>GD</th>
+              <th>PTS</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr>
+              <td class="position">1</td>
+              <td>Arsenal</td>
+              <td>10</td>
+              <td>+15</td>
+              <td class="points">25</td>
+            </tr>
+
+            <tr>
+              <td class="position">2</td>
+              <td>Liverpool</td>
+              <td>10</td>
+              <td>+12</td>
+              <td class="points">23</td>
+            </tr>
+
+            <tr>
+              <td class="position">3</td>
+              <td>Manchester City</td>
+              <td>10</td>
+              <td>+10</td>
+              <td class="points">21</td>
+            </tr>
+
+            <tr>
+              <td class="position">4</td>
+              <td>Chelsea</td>
+              <td>10</td>
+              <td>+7</td>
+              <td class="points">19</td>
+            </tr>
+
+            <tr>
+              <td class="position">5</td>
+              <td>Manchester United</td>
+              <td>10</td>
+              <td>+4</td>
+              <td class="points">17</td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+
+    <div id="empty" class="empty">
+      No results found 🔎
     </div>
 
-  </div>
+  </main>
+
+
+  <footer>
+    GoalData ⚽ • Football Data & Statistics
+  </footer>
+
 
   <script>
-    function showMessage() {
-      alert("Welcome to GoalData! ⚽");
-    }
 
-    function searchTeams() {
-      const search = document
-        .getElementById("search")
-        .value
-        .toLowerCase();
+    function showSection(sectionId, button) {
 
-      const matches = document.querySelectorAll(".match");
+      const sections = document.querySelectorAll(".section");
 
-      matches.forEach(match => {
-        const text = match.innerText.toLowerCase();
+      sections.forEach(section => {
+        section.classList.remove("active");
+      });
 
-        if (text.includes(search)) {
-          match.style.display = "flex";
-        } else {
-          match.style.display = "none";
-        }
+      document.getElementById(sectionId).classList.add("active");
+
+      const buttons = document.querySelectorAll(".nav button");
+
+      buttons.forEach(btn => {
+        btn.classList.remove("active");
+      });
+
+      button.classList.add("active");
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
       });
     }
+
+
+    function showSectionById(sectionId) {
+
+      const sections = document.querySelectorAll(".section");
+
+      sections.forEach(section => {
+        section.classList.remove("active");
+      });
+
+      document.getElementById(sectionId).classList.add("active");
+
+      const buttons = document.querySelectorAll(".nav button");
+
+      buttons.forEach(btn => {
+        btn.classList.remove("active");
+      });
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+
+
+    function searchEverything() {
+
+      const searchValue =
+        document.getElementById("search").value.toLowerCase().trim();
+
+      const items =
+        document.querySelectorAll(".searchable");
+
+      let found = 0;
+
+      items.forEach(item => {
+
+        const text =
+          item.innerText.toLowerCase();
+
+        if (text.includes(searchValue)) {
+
+          item.style.display = "";
+
+          found++;
+
+        } else {
+
+          item.style.display = "none";
+
+        }
+
+      });
+
+      const empty =
+        document.getElementById("empty");
+
+      if (searchValue !== "" && found === 0) {
+
+        empty.style.display = "block";
+
+      } else {
+
+        empty.style.display = "none";
+
+      }
+
+    }
+
   </script>
 
 </body>
-  </html>
+</html>
