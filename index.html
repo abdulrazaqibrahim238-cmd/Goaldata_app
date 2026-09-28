@@ -1,621 +1,266 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GoalData</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  font-family:Arial,sans-serif;
-}
+  <title>GoalData</title>
 
-body{
-  background:#f4f6f8;
-  color:#111827;
-  padding-bottom:75px;
-}
-
-header{
-  background:#071b35;
-  color:white;
-  padding:18px 16px;
-  position:sticky;
-  top:0;
-  z-index:10;
-}
-
-.logo{
-  font-size:27px;
-  font-weight:800;
-}
-
-.logo span{
-  color:#22c55e;
-}
-
-.clock{
-  font-size:13px;
-  margin-top:5px;
-  opacity:.85;
-}
-
-.nav{
-  display:flex;
-  gap:8px;
-  overflow-x:auto;
-  padding:12px;
-  background:white;
-  border-bottom:1px solid #ddd;
-}
-
-.nav button{
-  border:0;
-  background:#eef2f7;
-  padding:10px 15px;
-  border-radius:20px;
-  white-space:nowrap;
-  font-weight:bold;
-}
-
-.nav button.active{
-  background:#071b35;
-  color:white;
-}
-
-.container{
-  padding:14px;
-  max-width:900px;
-  margin:auto;
-}
-
-.search{
-  width:100%;
-  padding:14px;
-  border:1px solid #ddd;
-  border-radius:12px;
-  margin-bottom:15px;
-  font-size:15px;
-}
-
-.section-title{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin:18px 0 10px;
-}
-
-.section-title h2{
-  font-size:19px;
-}
-
-.card{
-  background:white;
-  border-radius:15px;
-  padding:15px;
-  margin-bottom:12px;
-  box-shadow:0 2px 8px #0000000d;
-}
-
-.match{
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
-  align-items:center;
-  gap:10px;
-  text-align:center;
-}
-
-.team{
-  font-weight:bold;
-}
-
-.score{
-  font-size:21px;
-  font-weight:800;
-}
-
-.live{
-  color:#ef4444;
-  font-size:12px;
-  font-weight:bold;
-}
-
-.time{
-  color:#6b7280;
-  font-size:12px;
-}
-
-.league{
-  color:#071b35;
-  font-weight:bold;
-  font-size:13px;
-  margin-bottom:10px;
-}
-
-.leagues{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-}
-
-.league-box{
-  background:white;
-  padding:16px;
-  border-radius:14px;
-  font-weight:bold;
-  box-shadow:0 2px 8px #0000000d;
-}
-
-.data-box{
-  background:white;
-  border-radius:15px;
-  padding:20px;
-  margin-top:15px;
-}
-
-.network{
-  display:flex;
-  gap:8px;
-  margin:15px 0;
-}
-
-.network button{
-  flex:1;
-  padding:12px 5px;
-  border:1px solid #ddd;
-  background:white;
-  border-radius:10px;
-  font-weight:bold;
-}
-
-.network button.selected{
-  background:#071b35;
-  color:white;
-}
-
-.data-option{
-  display:flex;
-  justify-content:space-between;
-  padding:14px 0;
-  border-bottom:1px solid #eee;
-}
-
-.buy{
-  background:#22c55e;
-  color:white;
-  border:0;
-  padding:9px 14px;
-  border-radius:8px;
-  font-weight:bold;
-}
-
-.bottom{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:white;
-  display:flex;
-  justify-content:space-around;
-  padding:10px 4px;
-  border-top:1px solid #ddd;
-  z-index:20;
-}
-
-.bottom button{
-  background:none;
-  border:0;
-  font-size:12px;
-  font-weight:bold;
-}
-
-.bottom button span{
-  display:block;
-  font-size:20px;
-  margin-bottom:3px;
-}
-
-.hidden{
-  display:none;
-}
-
-@media(max-width:500px){
-  .leagues{
-    grid-template-columns:1fr 1fr;
-  }
-}
-</style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header>
-  <div class="logo">Goal<span>Data</span> ⚽</div>
-  <div class="clock" id="clock">Loading time...</div>
-</header>
+  <header>
+    <div class="logo">Goal<span>Data</span> ⚽</div>
+    <div class="clock" id="clock">Loading time...</div>
+  </header>
 
-<div class="nav">
-  <button class="active" onclick="showPage('home',this)">Today</button>
-  <button onclick="showPage('live',this)">🔴 Live</button>
-  <button onclick="showPage('upcoming',this)">Upcoming</button>
-  <button onclick="showPage('leagues',this)">Leagues</button>
-  <button onclick="showPage('data',this)">📶 Data</button>
-</div>
+  <div class="nav">
 
-<main class="container">
+    <button class="active" onclick="showPage('home', this)">
+      Today
+    </button>
 
-<section id="home">
+    <button onclick="showPage('live', this)">
+      🔴 Live
+    </button>
 
-<input class="search" id="search" oninput="searchMatches()"
-placeholder="🔎 Search team or league...">
+    <button onclick="showPage('upcoming', this)">
+      Upcoming
+    </button>
 
-<div class="section-title">
-<h2>Today's Matches</h2>
-<span class="time" id="date"></span>
-</div>
+    <button onclick="showPage('leagues', this)">
+      Leagues
+    </button>
 
-<div id="matches"></div>
+    <button onclick="showPage('data', this)">
+      📶 Data
+    </button>
 
-</section>
+  </div>
 
 
-<section id="live" class="hidden">
+  <main class="container">
 
-<div class="section-title">
-<h2>🔴 Live Matches</h2>
-</div>
+    <!-- HOME -->
 
-<div id="liveMatches"></div>
+    <section id="home">
 
-</section>
+      <input
+        class="search"
+        id="search"
+        oninput="searchMatches()"
+        placeholder="🔎 Search team or league..."
+      >
 
+      <div class="section-title">
 
-<section id="upcoming" class="hidden">
+        <h2>Today's Matches</h2>
 
-<div class="section-title">
-<h2>Upcoming Matches</h2>
-</div>
+        <span class="time" id="date"></span>
 
-<div id="upcomingMatches"></div>
+      </div>
 
-</section>
+      <div id="matches"></div>
 
+    </section>
 
-<section id="leagues" class="hidden">
 
-<div class="section-title">
-<h2>🌍 Football Leagues</h2>
-</div>
+    <!-- LIVE -->
 
-<div class="leagues" id="leagueList"></div>
+    <section id="live" class="hidden">
 
-</section>
+      <div class="section-title">
 
+        <h2>🔴 Live Matches</h2>
 
-<section id="data" class="hidden">
+      </div>
 
-<div class="section-title">
-<h2>📶 Buy Data</h2>
-</div>
+      <div id="liveMatches"></div>
 
-<div class="data-box">
+    </section>
 
-<p><b>Choose Network</b></p>
 
-<div class="network">
-<button class="selected" onclick="network(this)">MTN</button>
-<button onclick="network(this)">Airtel</button>
-<button onclick="network(this)">Glo</button>
-<button onclick="network(this)">9mobile</button>
-</div>
+    <!-- UPCOMING -->
 
-<div class="data-option">
-<span>1GB Data</span>
-<b>₦500</b>
-<button class="buy" onclick="buyData('1GB')">Buy</button>
-</div>
+    <section id="upcoming" class="hidden">
 
-<div class="data-option">
-<span>2GB Data</span>
-<b>₦1,000</b>
-<button class="buy" onclick="buyData('2GB')">Buy</button>
-</div>
+      <div class="section-title">
 
-<div class="data-option">
-<span>5GB Data</span>
-<b>₦2,000</b>
-<button class="buy" onclick="buyData('5GB')">Buy</button>
-</div>
+        <h2>Upcoming Matches</h2>
 
-<p style="margin-top:15px;font-size:12px;color:#777">
-Payment and automatic data delivery will be connected in the next stage.
-</p>
-
-</div>
-
-</section>
-
-</main>
-
-
-<div class="bottom">
-
-<button onclick="showPage('home')">
-<span>🏠</span>Home
-</button>
-
-<button onclick="showPage('live')">
-<span>⚽</span>Live
-</button>
-
-<button onclick="showPage('leagues')">
-<span>🏆</span>Leagues
-</button>
-
-<button onclick="showPage('data')">
-<span>📶</span>Data
-</button>
-
-</div>
-
-
-<script>
-
-const matches=[
-
-{
-league:"Premier League",
-home:"Arsenal",
-away:"Chelsea",
-score:"-",
-time:"15:00",
-status:"Upcoming"
-},
-
-{
-league:"La Liga",
-home:"Real Madrid",
-away:"Barcelona",
-score:"-",
-time:"20:00",
-status:"Upcoming"
-},
-
-{
-league:"Serie A",
-home:"Inter Milan",
-away:"AC Milan",
-score:"-",
-time:"18:00",
-status:"Upcoming"
-},
-
-{
-league:"Bundesliga",
-home:"Bayern Munich",
-away:"Dortmund",
-score:"-",
-time:"17:30",
-status:"Upcoming"
-},
-
-{
-league:"Ligue 1",
-home:"PSG",
-away:"Marseille",
-score:"-",
-time:"21:00",
-status:"Upcoming"
-}
-
-];
-
-
-const leagues=[
-
-"🏴 Premier League",
-"🏴 Championship",
-"🏴 League One",
-"🏴 League Two",
-"🏴 FA Cup",
-"🇪🇸 La Liga",
-"🇪🇸 La Liga 2",
-"🇪🇸 Copa del Rey",
-"🇩🇪 Bundesliga",
-"🇩🇪 2. Bundesliga",
-"🇩🇪 DFB-Pokal",
-"🇮🇹 Serie A",
-"🇮🇹 Serie B",
-"🇮🇹 Coppa Italia",
-"🇫🇷 Ligue 1",
-"🇫🇷 Ligue 2",
-"🇳🇱 Eredivisie",
-"🇵🇹 Primeira Liga",
-"🇹🇷 Süper Lig",
-"🇧🇪 Pro League",
-"🇬🇷 Super League",
-"🇷🇸 SuperLiga",
-"🇭🇷 HNL",
-"🇵🇱 Ekstraklasa",
-"🇸🇪 Allsvenskan",
-"🇳🇴 Eliteserien",
-"🇩🇰 Superliga",
-"🇦🇹 Bundesliga",
-"🇨🇭 Super League",
-"🇺🇸 MLS",
-"🇲🇽 Liga MX",
-"🇧🇷 Série A",
-"🇧🇷 Série B",
-"🇦🇷 Liga Profesional",
-"🇨🇴 Primera División",
-"🇨🇱 Primera División",
-"🇯🇵 J1 League",
-"🇰🇷 K League 1",
-"🇨🇳 Chinese Super League",
-"🇸🇦 Saudi Pro League",
-"🇦🇺 A-League",
-"🇮🇳 Indian Super League",
-"🇳🇬 Nigeria Premier Football League",
-"🇪🇬 Egyptian Premier League",
-"🇿🇦 South African Premiership",
-"🇲🇦 Botola Pro",
-"🇩🇿 Algerian Ligue 1",
-"🇹🇳 Tunisian Ligue 1",
-"🇦🇴 Girabola",
-"🏆 UEFA Champions League",
-"🏆 UEFA Europa League",
-"🏆 UEFA Conference League",
-"🏆 Copa Libertadores",
-"🏆 Copa Sudamericana",
-"🏆 AFC Champions League",
-"🏆 CAF Champions League",
-"🏆 CONCACAF Champions Cup",
-"🌍 FIFA Club World Cup",
-"🌍 FIFA World Cup",
-"🌍 AFCON",
-"🌍 Copa América",
-"🌍 UEFA EURO",
-"🌍 Asian Cup",
-"🌍 Gold Cup"
-];
-
-
-function updateClock(){
-
-const now=new Date();
-
-document.getElementById("clock").textContent=
-now.toLocaleString();
-
-document.getElementById("date").textContent=
-now.toLocaleDateString();
+      </div>
 
-}
+      <div id="upcomingMatches"></div>
 
-setInterval(updateClock,1000);
-updateClock();
+    </section>
 
 
-function matchCard(m){
+    <!-- LEAGUES -->
 
-return `
-<div class="card">
+    <section id="leagues" class="hidden">
 
-<div class="league">${m.league}</div>
+      <div class="section-title">
 
-<div class="match">
+        <h2>🌍 Football Leagues</h2>
 
-<div class="team">${m.home}</div>
+      </div>
 
-<div>
-<div class="${m.status==="Live"?"live":"score"}">
-${m.score}
-</div>
-<div class="time">
-${m.status==="Live" ? "🔴 LIVE" : m.time}
-</div>
-</div>
+      <div class="leagues" id="leagueList"></div>
 
-<div class="team">${m.away}</div>
+    </section>
 
-</div>
 
-</div>
-`;
+    <!-- DATA -->
 
-}
+    <section id="data" class="hidden">
 
+      <div class="section-title">
 
-function renderMatches(list=matches){
+        <h2>📶 Buy Data</h2>
 
-document.getElementById("matches").innerHTML=
-list.map(matchCard).join("");
+      </div>
 
-document.getElementById("liveMatches").innerHTML=
-list.filter(x=>x.status==="Live")
-.map(matchCard).join("") ||
-'<div class="card">No live matches right now.</div>';
 
-document.getElementById("upcomingMatches").innerHTML=
-list.filter(x=>x.status==="Upcoming")
-.map(matchCard).join("") ||
-'<div class="card">No upcoming matches.</div>';
+      <div class="data-box">
 
-}
+        <p>
+          <b>Choose Network</b>
+        </p>
 
-renderMatches();
 
+        <div class="network">
 
-function searchMatches(){
+          <button
+            class="selected"
+            onclick="network(this)"
+          >
+            MTN
+          </button>
 
-const q=document.getElementById("search")
-.value.toLowerCase();
+          <button onclick="network(this)">
+            Airtel
+          </button>
 
-const filtered=matches.filter(m=>
-m.home.toLowerCase().includes(q) ||
-m.away.toLowerCase().includes(q) ||
-m.league.toLowerCase().includes(q)
-);
+          <button onclick="network(this)">
+            Glo
+          </button>
 
-renderMatches(filtered);
+          <button onclick="network(this)">
+            9mobile
+          </button>
 
-}
+        </div>
 
 
-function renderLeagues(){
+        <div class="data-option">
 
-document.getElementById("leagueList").innerHTML=
-leagues.map(l=>
-`<div class="league-box">${l}</div>`
-).join("");
+          <span>1GB Data</span>
 
-}
+          <b>₦500</b>
 
-renderLeagues();
+          <button
+            class="buy"
+            onclick="buyData('1GB')"
+          >
+            Buy
+          </button>
 
+        </div>
 
-function showPage(page,button){
 
-document.querySelectorAll("main section")
-.forEach(s=>s.classList.add("hidden"));
+        <div class="data-option">
 
-document.getElementById(page)
-.classList.remove("hidden");
+          <span>2GB Data</span>
 
-document.querySelectorAll(".nav button")
-.forEach(b=>b.classList.remove("active"));
+          <b>₦1,000</b>
 
-if(button) button.classList.add("active");
+          <button
+            class="buy"
+            onclick="buyData('2GB')"
+          >
+            Buy
+          </button>
 
-window.scrollTo(0,0);
+        </div>
 
-}
 
+        <div class="data-option">
 
-function network(button){
+          <span>5GB Data</span>
 
-document.querySelectorAll(".network button")
-.forEach(b=>b.classList.remove("selected"));
+          <b>₦2,000</b>
 
-button.classList.add("selected");
+          <button
+            class="buy"
+            onclick="buyData('5GB')"
+          >
+            Buy
+          </button>
 
-}
+        </div>
 
 
-function buyData(size){
+        <p style="margin-top:15px;font-size:12px;color:#777">
 
-alert(
-"GoalData Data Service\n\n"+
-"Package: "+size+
-"\n\nPayment/data delivery will be connected in the next stage."
-);
+          Payment and automatic data delivery
+          will be connected in the next stage.
 
-}
+        </p>
 
-</script>
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- BOTTOM NAVIGATION -->
+
+  <div class="bottom">
+
+    <button onclick="showPage('home')">
+
+      <span>🏠</span>
+
+      Home
+
+    </button>
+
+
+    <button onclick="showPage('live')">
+
+      <span>⚽</span>
+
+      Live
+
+    </button>
+
+
+    <button onclick="showPage('leagues')">
+
+      <span>🏆</span>
+
+      Leagues
+
+    </button>
+
+
+    <button onclick="showPage('data')">
+
+      <span>📶</span>
+
+      Data
+
+    </button>
+
+  </div>
+
+
+  <!-- JAVASCRIPT -->
+
+  <script src="app.js"></script>
 
 </body>
 </html>
